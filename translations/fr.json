@@ -1,0 +1,103 @@
+{
+  "lang": "fr",
+  "langName": "Français",
+  "nav": {
+    "title": "🐳 Générateur Dockerfile",
+    "subtitle": "Outil de configuration Docker simple, puissant et convivial"
+  },
+  "presets": {
+    "title": "🚀 Démarrage Rapide",
+    "subtitle": "Sélectionnez un modèle prédéfini pour générer rapidement Dockerfile ou personnalisez la configuration"
+  },
+  "config": {
+    "title": "⚙️ Configuration",
+    "basic": {
+      "title": "📦 Configuration de Base",
+      "maintainer": "Mainteneur (Optionnel)",
+      "maintainer_placeholder": "ex: Your Name <your.email@example.com>",
+      "base_image": "Image de Base ⭐",
+      "base_image_hint": "⭐ Versions marquées recommandées, plus petites et plus sécurisées",
+      "work_dir": "Répertoire de Travail",
+      "work_dir_hint": "Chemin du répertoire où le code de l'application est stocké",
+      "port": "Port Exposé",
+      "port_hint": "Numéro de port à exposer lors de l'exécution du conteneur"
+    },
+    "deps": {
+      "title": "📚 Gestion des Dépendances",
+      "package_manager": "Gestionnaire de Paquets",
+      "requirements_file": "Fichier de Dépendances",
+      "requirements_hint": "Fichier de dépendances pour projets Python",
+      "app_dir": "Répertoire de l'Application",
+      "app_dir_hint": "Répertoire du projet (relatif au répertoire de travail)"
+    },
+    "env": {
+      "title": "🔧 Variables d'Environnement",
+      "subtitle": "Définir les variables de configuration nécessaires à l'exécution",
+      "var_name": "Nom de la Variable",
+      "var_value": "Valeur",
+      "action": "Action",
+      "delete": "Supprimer",
+      "add": "+ Ajouter une Variable"
+    },
+    "advanced": {
+      "title": "⚡ Options Avancées",
+      "toggle": "Développer la Configuration Avancée",
+      "system_packages": "Paquets Système",
+      "system_packages_hint": "Installer des paquets système supplémentaires, séparés par des virgules (espace pour Alpine)",
+      "app_code_dir": "Répertoire du Code Application",
+      "app_code_dir_hint": "Répertoire du code source (relatif au répertoire de travail)",
+      "health_check": "Commande de Vérification de Santé",
+      "health_check_hint": "Commande de health check du conteneur (recommandé)",
+      "cmd": "Commande de Démarrage",
+      "cmd_hint": "Commande à exécuter au démarrage du conteneur (remplace la valeur par défaut du framework)",
+      "framework": "Type de Framework (définit automatiquement la commande de démarrage)",
+      "create_user": "Créer un utilisateur non-root (bonne pratique de sécurité)",
+      "create_user_hint": "Recommandé d'activer, l'exécution en tant qu'utilisateur non-privilégié est plus sûre"
+    }
+  },
+  "preview": {
+    "title": "📄 Aperçu en Direct",
+    "copy": "📋 Copier",
+    "dockerignore": "📥 .dockerignore",
+    "download": "⬇️ Télécharger",
+    "placeholder": "# Sélectionnez un préréglage ou configurez les options pour commencer à générer Dockerfile\n# Cliquez sur le bouton \"Générer Dockerfile\" ci-dessus pour voir les résultats"
+  },
+  "tips": {
+    "title": "💡 Conseils",
+    "tip1_title": "🎯 Utiliser les Modèles Préréglés",
+    "tip1_content": "Sélectionner un modèle préréglé configure rapidement les stacks techniques courants avec tous les paramètres automatiquement définis.",
+    "tip2_title": "📦 Les Images Slim sont Plus Légères",
+    "tip2_content": "Préférez les versions <code>*-slim</code> ou <code>*-alpine</code> des images, plus petites et plus sécurisées.",
+    "tip3_title": "🔒 Utiliser .dockerignore",
+    "tip3_content": "N'oubliez pas de télécharger le fichier <code>.dockerignore</code> pour exclure les fichiers inutiles (comme <code>node_modules</code>), accélère le build.",
+    "tip4_title": "🏗️ Build Multi-Étapes",
+    "tip4_content": "Pour les projets complexes, générez un Dockerfile multi-étapes, build d'abord puis exécution, réduit la taille de l'image finale."
+  },
+  "button": {
+    "generate": "🎯 Générer Dockerfile"
+  },
+  "toast": {
+    "preset_applied": "Préréglage appliqué: ",
+    "preset_failed": "Échec de l'application du préréglage",
+    "generate_success": "Dockerfile généré avec succès!",
+    "generate_failed": "Échec de la génération: ",
+    "copy_success": "Copié dans le presse-papiers!",
+    "copy_failed": "Échec de la copie, veuillez sélectionner le texte manuellement",
+    "download_success": "Téléchargement réussi!",
+    "download_failed": "Échec du téléchargement, veuillez réessayer",
+    "select_image": "Veuillez sélectionner une image de base",
+    "generate_first": "Veuillez d'abord générer le Dockerfile"
+  },
+  "frameworks": {
+    "none": "Aucun framework préréglé",
+    "python": "🐍 Python",
+    "nodejs": "🟢 Node.js",
+    "java": "☕ Java",
+    "go": "🔷 Go",
+    "php": "🐘 PHP",
+    "rust": "🦀 Rust",
+    "dotnet": "🎯 .NET",
+    "ruby": "🔶 Ruby",
+    "other": "🌐 Autre"
+  }
+}

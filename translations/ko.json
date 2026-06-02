@@ -1,0 +1,103 @@
+{
+  "lang": "ko",
+  "langName": "한국어",
+  "nav": {
+    "title": "🐳 Dockerfile 생성기",
+    "subtitle": "간단하고 강력하며 초보자 친화적인 Docker 구성 도구"
+  },
+  "presets": {
+    "title": "🚀 빠른 시작",
+    "subtitle": "프리셋 템플릿을 선택하여 Dockerfile을 빠르게 생성하거나 구성 사용자 지정"
+  },
+  "config": {
+    "title": "⚙️ 구성",
+    "basic": {
+      "title": "📦 기본 구성",
+      "maintainer": "관리자 (선택 사항)",
+      "maintainer_placeholder": "예: Your Name <your.email@example.com>",
+      "base_image": "기본 이미지 ⭐",
+      "base_image_hint": "⭐ 표시된 버전은 권장, 크기가 작고 보안성이 높음",
+      "work_dir": "작업 디렉토리",
+      "work_dir_hint": "애플리케이션 코드가 저장되는 디렉토리 경로",
+      "port": "노출 포트",
+      "port_hint": "컨테이너 실행 시 노출할 포트 번호"
+    },
+    "deps": {
+      "title": "📚 의존성 관리",
+      "package_manager": "패키지 관리자",
+      "requirements_file": "의존성 파일",
+      "requirements_hint": "Python 프로젝트의 의존성 파일",
+      "app_dir": "애플리케이션 디렉토리",
+      "app_dir_hint": "프로젝트 디렉토리 (작업 디렉토리 기준 상대 경로)"
+    },
+    "env": {
+      "title": "🔧 환경 변수",
+      "subtitle": "런타임에 필요한 구성 변수 설정",
+      "var_name": "변수 이름",
+      "var_value": "값",
+      "action": "작업",
+      "delete": "삭제",
+      "add": "+ 환경 변수 추가"
+    },
+    "advanced": {
+      "title": "⚡ 고급 옵션",
+      "toggle": "고급 구성 펼치기",
+      "system_packages": "시스템 패키지",
+      "system_packages_hint": "추가 시스템 패키지 설치, 쉼표로 구분 (Alpine은 공백)",
+      "app_code_dir": "애플리케이션 코드 디렉토리",
+      "app_code_dir_hint": "소스 코드 디렉토리 (작업 디렉토리 기준 상대 경로)",
+      "health_check": "헬스 체크 명령",
+      "health_check_hint": "컨테이너 헬스 체크 명령 (권장)",
+      "cmd": "시작 명령",
+      "cmd_hint": "컨테이너 시작 시 실행할 명령 (프레임워크 기본값 재정의)",
+      "framework": "프레임워크 유형 (시작 명령 자동 설정)",
+      "create_user": "비root 사용자 생성 (보안 모범 사례)",
+      "create_user_hint": "활성화 권장, 비특권 사용자로 실행이 더 안전함"
+    }
+  },
+  "preview": {
+    "title": "📄 실시간 미리보기",
+    "copy": "📋 복사",
+    "dockerignore": "📥 .dockerignore",
+    "download": "⬇️ 다운로드",
+    "placeholder": "# 프리셋을 선택하거나 옵션을 구성하여 Dockerfile 생성 시작\n# 위의 \"Dockerfile 생성\" 버튼을 클릭하여 결과 확인"
+  },
+  "tips": {
+    "title": "💡 팁",
+    "tip1_title": "🎯 프리셋 템플릿 사용",
+    "tip1_content": "프리셋 템플릿을 선택하면 일반적인 기술 스택을 빠르게 구성할 수 있으며 모든 매개변수가 자동으로 설정됩니다.",
+    "tip2_title": "📦 Slim 이미지가 더 가벼움",
+    "tip2_content": "<code>*-slim</code> 또는 <code>*-alpine</code> 버전 이미지를 우선 선택, 크기가 작고 보안성이 높음.",
+    "tip3_title": "🔒 .dockerignore 사용",
+    "tip3_content": "<code>.dockerignore</code> 파일을 다운로드하여 불필요한 파일(<code>node_modules</code> 등)을 제외, 빌드 속도 향상.",
+    "tip4_title": "🏗️ 멀티 스테이지 빌드",
+    "tip4_content": "복잡한 프로젝트의 경우 멀티 스테이지 Dockerfile을 생성, 먼저 빌드한 후 실행, 최종 이미지 크기 감소."
+  },
+  "button": {
+    "generate": "🎯 Dockerfile 생성"
+  },
+  "toast": {
+    "preset_applied": "프리셋 적용됨: ",
+    "preset_failed": "프리셋 적용 실패",
+    "generate_success": "Dockerfile이 성공적으로 생성되었습니다!",
+    "generate_failed": "생성 실패: ",
+    "copy_success": "클립보드에 복사됨!",
+    "copy_failed": "복사 실패, 텍스트를 수동으로 선택하세요",
+    "download_success": "다운로드 성공!",
+    "download_failed": "다운로드 실패, 다시 시도하세요",
+    "select_image": "기본 이미지를 선택하세요",
+    "generate_first": "먼저 Dockerfile을 생성하세요"
+  },
+  "frameworks": {
+    "none": "프리셋 프레임워크 없음",
+    "python": "🐍 Python",
+    "nodejs": "🟢 Node.js",
+    "java": "☕ Java",
+    "go": "🔷 Go",
+    "php": "🐘 PHP",
+    "rust": "🦀 Rust",
+    "dotnet": "🎯 .NET",
+    "ruby": "🔶 Ruby",
+    "other": "🌐 기타"
+  }
+}

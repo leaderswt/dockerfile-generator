@@ -51,7 +51,15 @@
             backdrop-filter: blur(10px);
         }
 
-        .navbar h1 {
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .navbar-title h1 {
             font-size: 1.8rem;
             font-weight: 700;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
@@ -63,10 +71,47 @@
             gap: 0.5rem;
         }
 
-        .navbar p {
+        .navbar-title p {
             color: var(--text-secondary);
             margin-top: 0.25rem;
             font-size: 0.9rem;
+        }
+
+        /* 语言选择器 */
+        .language-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .language-selector select {
+            padding: 0.5rem 1rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .language-selector select:hover {
+            border-color: var(--primary-color);
+        }
+
+        .language-selector select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(36, 150, 237, 0.1);
+        }
+
+        /* RTL支持 */
+        [dir="rtl"] {
+            direction: rtl;
+        }
+
+        [dir="rtl"] .navbar-content {
+            flex-direction: row-reverse;
         }
 
         /* 主容器 */
@@ -612,15 +657,31 @@
 </head>
 <body>
     <nav class="navbar">
-        <h1>🐳 Dockerfile生成器</h1>
-        <p>简单、强大、小白友好的Docker配置工具</p>
+        <div class="navbar-content">
+            <div class="navbar-title">
+                <h1 id="nav-title">🐳 Dockerfile生成器</h1>
+                <p id="nav-subtitle">简单、强大、小白友好的Docker配置工具</p>
+            </div>
+            <div class="language-selector">
+                <select id="languageSelect" onchange="changeLanguage(this.value)">
+                    <option value="zh">简体中文</option>
+                    <option value="en">English</option>
+                    <option value="ja">日本語</option>
+                    <option value="ko">한국어</option>
+                    <option value="ru">Русский</option>
+                    <option value="ar">العربية</option>
+                    <option value="de">Deutsch</option>
+                    <option value="fr">Français</option>
+                </select>
+            </div>
+        </div>
     </nav>
 
     <div class="container">
         <!-- 预设模板区域 -->
         <section class="presets-section">
-            <h2 class="section-title">🚀 快速开始</h2>
-            <p class="section-subtitle">选择一个预设模板快速生成Dockerfile，或自定义配置</p>
+            <h2 class="section-title" id="presets-title">🚀 快速开始</h2>
+            <p class="section-subtitle" id="presets-subtitle">选择一个预设模板快速生成Dockerfile，或自定义配置</p>
             
             <div class="presets-grid" id="presetsGrid">
                 {% for key, preset in presets.items() %}
@@ -636,11 +697,11 @@
         <div class="main-layout">
             <!-- 配置面板 -->
             <div class="config-panel">
-                <h2 class="section-title">⚙️ 配置选项</h2>
+                <h2 class="section-title" id="config-title">⚙️ 配置选项</h2>
                 
                 <!-- 基础配置 -->
                 <div class="config-section">
-                    <h3>📦 基础配置</h3>
+                    <h3 id="basic-config-title">📦 基础配置</h3>
                     
                     <div class="form-group">
                         <label>维护者（可选）</label>
@@ -724,7 +785,7 @@
 
                 <!-- 包管理器配置 -->
                 <div class="config-section">
-                    <h3>📚 依赖管理</h3>
+                    <h3 id="deps-title">📚 依赖管理</h3>
                     
                     <div class="form-group">
                         <label>包管理器</label>
@@ -756,7 +817,7 @@
 
                 <!-- 环境变量 -->
                 <div class="config-section">
-                    <h3>🔧 环境变量</h3>
+                    <h3 id="env-title">🔧 环境变量</h3>
                     <p class="section-subtitle">设置容器运行时需要的配置变量</p>
                     
                     <table class="env-vars-table">
@@ -780,7 +841,7 @@
 
                 <!-- 高级选项 -->
                 <div class="config-section">
-                    <h3>⚡ 高级选项</h3>
+                    <h3 id="advanced-title">⚡ 高级选项</h3>
                     
                     <div class="advanced-toggle" onclick="toggleAdvanced()">
                         <span>展开高级配置</span>
@@ -865,7 +926,7 @@
 
                 <!-- 生成按钮 -->
                 <div class="generate-section">
-                    <button class="btn-generate" onclick="generateDockerfile()">
+                    <button class="btn-generate" id="generate-btn" onclick="generateDockerfile()">
                         🎯 生成 Dockerfile
                     </button>
                 </div>
@@ -874,7 +935,7 @@
             <!-- 预览面板 -->
             <div class="preview-panel">
                 <div class="preview-header">
-                    <h3>📄 实时预览</h3>
+                    <h3 id="preview-title">📄 实时预览</h3>
                     <div class="preview-actions">
                         <button class="btn btn-secondary" onclick="copyDockerfile()">
                             📋 复制
@@ -900,7 +961,7 @@
 
         <!-- 使用技巧 -->
         <section class="tips-section">
-            <h2 class="section-title">💡 使用技巧</h2>
+            <h2 class="section-title" id="tips-title">💡 使用技巧</h2>
             <div class="tips-grid">
                 <div class="tip-card">
                     <h4>🎯 使用预设模板</h4>
@@ -923,12 +984,121 @@
     </div>
 
     <script>
+        // ==================================================
+        // 国际化支持
+        // ==================================================
+        
+        // 当前语言
+        let currentLang = localStorage.getItem('lang') || 'zh';
+        let translations = {};
+        
+        // 初始化语言
+        async function initLanguage() {
+            // 设置语言选择器的值
+            document.getElementById('languageSelect').value = currentLang;
+            // 加载翻译
+            await loadTranslations(currentLang);
+            // 应用翻译
+            applyTranslations();
+        }
+        
+        // 加载翻译文件
+        async function loadTranslations(lang) {
+            try {
+                const response = await fetch(`/api/translation/${lang}`);
+                const data = await response.json();
+                if (data.success) {
+                    translations = data.translation;
+                    // 设置RTL
+                    if (data.is_rtl) {
+                        document.documentElement.setAttribute('dir', 'rtl');
+                    } else {
+                        document.documentElement.removeAttribute('dir');
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load translations:', error);
+            }
+        }
+        
+        // 应用翻译到页面
+        function applyTranslations() {
+            if (!translations || Object.keys(translations).length === 0) return;
+            
+            // 导航栏
+            setText('nav-title', translations.nav?.title);
+            setText('nav-subtitle', translations.nav?.subtitle);
+            
+            // 预设区域
+            setHtml('presets-title', translations.presets?.title);
+            setHtml('presets-subtitle', translations.presets?.subtitle);
+            
+            // 配置区域
+            setHtml('config-title', translations.config?.title);
+            setHtml('basic-config-title', translations.config?.basic?.title);
+            setHtml('deps-title', translations.config?.deps?.title);
+            setHtml('env-title', translations.config?.env?.title);
+            setHtml('advanced-title', translations.config?.advanced?.title);
+            
+            // 预览区域
+            setHtml('preview-title', translations.preview?.title);
+            
+            // 提示区域
+            setHtml('tips-title', translations.tips?.title);
+            
+            // 按钮
+            setHtml('generate-btn', translations.button?.generate);
+            
+            // 更新文档标题
+            document.title = translations.nav?.title + ' - ' + translations.nav?.subtitle;
+        }
+        
+        // 辅助函数：设置文本
+        function setText(id, text) {
+            const el = document.getElementById(id);
+            if (el && text) el.textContent = text;
+        }
+        
+        // 辅助函数：设置HTML
+        function setHtml(id, html) {
+            const el = document.getElementById(id);
+            if (el && html) el.innerHTML = html;
+        }
+        
+        // 切换语言
+        async function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            await loadTranslations(lang);
+            applyTranslations();
+            showToast(`Language changed to ${SUPPORTED_LANGUAGES[lang] || lang}`, 'success');
+        }
+        
+        // 支持的语言名称
+        const SUPPORTED_LANGUAGES = {
+            'zh': '简体中文',
+            'en': 'English',
+            'ja': '日本語',
+            'ko': '한국어',
+            'ru': 'Русский',
+            'ar': 'العربية',
+            'de': 'Deutsch',
+            'fr': 'Français'
+        };
+
+        // ==================================================
+        // 原有功能代码
+        // ==================================================
+        
         // 当前配置
         let currentConfig = {};
         let currentDockerfile = '';
 
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
+            // 初始化语言
+            initLanguage();
+            
             // 初始化包管理器显示/隐藏
             updatePackageManagerUI();
             

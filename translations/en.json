@@ -1,0 +1,103 @@
+{
+  "lang": "en",
+  "langName": "English",
+  "nav": {
+    "title": "🐳 Dockerfile Generator",
+    "subtitle": "Simple, powerful, beginner-friendly Docker configuration tool"
+  },
+  "presets": {
+    "title": "🚀 Quick Start",
+    "subtitle": "Select a preset template to quickly generate Dockerfile, or customize configuration"
+  },
+  "config": {
+    "title": "⚙️ Configuration",
+    "basic": {
+      "title": "📦 Basic Configuration",
+      "maintainer": "Maintainer (Optional)",
+      "maintainer_placeholder": "e.g.: Your Name <your.email@example.com>",
+      "base_image": "Base Image ⭐",
+      "base_image_hint": "⭐ Marked versions are recommended, smaller size and more secure",
+      "work_dir": "Working Directory",
+      "work_dir_hint": "Directory path where application code is stored",
+      "port": "Exposed Port",
+      "port_hint": "Port number to expose when container runs"
+    },
+    "deps": {
+      "title": "📚 Dependency Management",
+      "package_manager": "Package Manager",
+      "requirements_file": "Dependencies File",
+      "requirements_hint": "Dependency file for Python projects",
+      "app_dir": "Application Directory",
+      "app_dir_hint": "Project directory (relative to working directory)"
+    },
+    "env": {
+      "title": "🔧 Environment Variables",
+      "subtitle": "Set configuration variables needed at runtime",
+      "var_name": "Variable Name",
+      "var_value": "Value",
+      "action": "Action",
+      "delete": "Delete",
+      "add": "+ Add Environment Variable"
+    },
+    "advanced": {
+      "title": "⚡ Advanced Options",
+      "toggle": "Expand Advanced Configuration",
+      "system_packages": "System Packages",
+      "system_packages_hint": "Install additional system packages, comma separated (space for Alpine)",
+      "app_code_dir": "Application Code Directory",
+      "app_code_dir_hint": "Source code directory (relative to working directory)",
+      "health_check": "Health Check Command",
+      "health_check_hint": "Container health check command (recommended)",
+      "cmd": "Start Command",
+      "cmd_hint": "Command to execute when container starts (overrides framework default)",
+      "framework": "Framework Type (auto-sets start command)",
+      "create_user": "Create non-root user (security best practice)",
+      "create_user_hint": "Recommended to enable, running as non-privileged user is more secure"
+    }
+  },
+  "preview": {
+    "title": "📄 Live Preview",
+    "copy": "📋 Copy",
+    "dockerignore": "📥 .dockerignore",
+    "download": "⬇️ Download",
+    "placeholder": "# Select a preset or configure options to start generating Dockerfile\n# Click \"Generate Dockerfile\" button above to see results"
+  },
+  "tips": {
+    "title": "💡 Tips",
+    "tip1_title": "🎯 Use Preset Templates",
+    "tip1_content": "Selecting a preset template quickly configures common tech stacks with all parameters automatically set, perfect for beginners.",
+    "tip2_title": "📦 Slim Images are Lighter",
+    "tip2_content": "Prefer <code>*-slim</code> or <code>*-alpine</code> image versions, smaller size and higher security.",
+    "tip3_title": "🔒 Use .dockerignore",
+    "tip3_content": "Remember to download <code>.dockerignore</code> file to exclude unnecessary files (like <code>node_modules</code>), speeds up build.",
+    "tip4_title": "🏗️ Multi-stage Build",
+    "tip4_content": "For complex projects, generate multi-stage Dockerfile, build first then run, reduces final image size."
+  },
+  "button": {
+    "generate": "🎯 Generate Dockerfile"
+  },
+  "toast": {
+    "preset_applied": "Preset applied: ",
+    "preset_failed": "Failed to apply preset",
+    "generate_success": "Dockerfile generated successfully!",
+    "generate_failed": "Generation failed: ",
+    "copy_success": "Copied to clipboard!",
+    "copy_failed": "Copy failed, please select text manually",
+    "download_success": "Download successful!",
+    "download_failed": "Download failed, please try again",
+    "select_image": "Please select a base image",
+    "generate_first": "Please generate Dockerfile first"
+  },
+  "frameworks": {
+    "none": "No preset framework",
+    "python": "🐍 Python",
+    "nodejs": "🟢 Node.js",
+    "java": "☕ Java",
+    "go": "🔷 Go",
+    "php": "🐘 PHP",
+    "rust": "🦀 Rust",
+    "dotnet": "🎯 .NET",
+    "ruby": "🔶 Ruby",
+    "other": "🌐 Other"
+  }
+}

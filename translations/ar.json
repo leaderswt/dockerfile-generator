@@ -1,0 +1,103 @@
+{
+  "lang": "ar",
+  "langName": "العربية",
+  "nav": {
+    "title": "🐳 مولد Dockerfile",
+    "subtitle": "أداة Docker بسيطة وقوية وسهلة للمبتدئين"
+  },
+  "presets": {
+    "title": "🚀 البدء السريع",
+    "subtitle": "اختر قالب محدد مسبقًا لإنشاء Dockerfile بسرعة أو تخصيص التكوين"
+  },
+  "config": {
+    "title": "⚙️ التكوين",
+    "basic": {
+      "title": "📦 التكوين الأساسي",
+      "maintainer": "المشرف (اختياري)",
+      "maintainer_placeholder": "مثال: Your Name <your.email@example.com>",
+      "base_image": "الصورة الأساسية ⭐",
+      "base_image_hint": "⭐ الإصدارات المميزة موصى بها، أصغر حجم وأمان أعلى",
+      "work_dir": "دليل العمل",
+      "work_dir_hint": "مسار الدليل حيث يتم تخزين كود التطبيق",
+      "port": "المنفذ المفتوح",
+      "port_hint": "رقم المنفذ للفتح عند تشغيل الحاوية"
+    },
+    "deps": {
+      "title": "📚 إدارة التبعيات",
+      "package_manager": "مدير الحزم",
+      "requirements_file": "ملف التبعيات",
+      "requirements_hint": "ملف التبعيات لمشاريع Python",
+      "app_dir": "دليل التطبيق",
+      "app_dir_hint": "دليل المشروع (نسبي إلى دليل العمل)"
+    },
+    "env": {
+      "title": "🔧 متغيرات البيئة",
+      "subtitle": "تعيين متغيرات التكوين المطلوبة وقت التشغيل",
+      "var_name": "اسم المتغير",
+      "var_value": "القيمة",
+      "action": "إجراء",
+      "delete": "حذف",
+      "add": "+ إضافة متغير بيئة"
+    },
+    "advanced": {
+      "title": "⚡ خيارات متقدمة",
+      "toggle": "توسيع التكوين المتقدم",
+      "system_packages": "حزم النظام",
+      "system_packages_hint": "تثبيت حزم نظام إضافية، مفصولة بفواصل (مسافة لـ Alpine)",
+      "app_code_dir": "دليل كود التطبيق",
+      "app_code_dir_hint": "دليل الكود المصدري (نسبي إلى دليل العمل)",
+      "health_check": "أمر فحص الصحة",
+      "health_check_hint": "أمر فحص صحة الحاوية (موصى به)",
+      "cmd": "أمر البدء",
+      "cmd_hint": "الأمر للتنفيذ عند بدء الحاوية (يتجاوز افتراضي الإطار)",
+      "framework": "نوع الإطار (ضبط تلقائي لأمر البدء)",
+      "create_user": "إنشاء مستخدم non-root (أفضل ممارسة أمنية)",
+      "create_user_hint": "يوصى بالتفعيل، التشغيل كمستخدم non-privileged أكثر أمانًا"
+    }
+  },
+  "preview": {
+    "title": "📄 معاينة مباشرة",
+    "copy": "📋 نسخ",
+    "dockerignore": "📥 .dockerignore",
+    "download": "⬇️ تحميل",
+    "placeholder": "# اختر محدد مسبق أو تكوين الخيارات لبدء إنشاء Dockerfile\n# انقر زر \"إنشاء Dockerfile\" أعلاه لرؤية النتائج"
+  },
+  "tips": {
+    "title": "💡 نصائح",
+    "tip1_title": "🎯 استخدم قوالب محددة مسبقًا",
+    "tip1_content": "اختيار قالب محدد مسبقًا يكوين بسرعة التقنيات الشائعة مع ضبط تلقائي لجميع المعاملات.",
+    "tip2_title": "📦 صور Slim أخف",
+    "tip2_content": "تفضل إصدارات <code>*-slim</code> أو <code>*-alpine</code>، حجم أصغر وأمان أعلى.",
+    "tip3_title": "🔒 استخدم .dockerignore",
+    "tip3_content": "تذكر تحميل ملف <code>.dockerignore</code> لاستبعاد الملفات غير الضرورية (مثل <code>node_modules</code>)، يسرع البناء.",
+    "tip4_title": "🏗️ بناء متعدد المراحل",
+    "tip4_content": "للمشاريع المعقدة، أنشئ Dockerfile متعدد المراحل، البناء أولاً ثم التشغيل، يقلل حجم الصورة النهائية."
+  },
+  "button": {
+    "generate": "🎯 إنشاء Dockerfile"
+  },
+  "toast": {
+    "preset_applied": "تم تطبيق المحدد: ",
+    "preset_failed": "فشل تطبيق المحدد",
+    "generate_success": "تم إنشاء Dockerfile بنجاح!",
+    "generate_failed": "فشل الإنشاء: ",
+    "copy_success": "تم النسخ إلى الحافظة!",
+    "copy_failed": "فشل النسخ، اختر النص يدويًا",
+    "download_success": "تم التحميل بنجاح!",
+    "download_failed": "فشل التحميل، حاول مرة أخرى",
+    "select_image": "يرجى اختيار صورة أساسية",
+    "generate_first": "أنشئ Dockerfile أولاً"
+  },
+  "frameworks": {
+    "none": "بدون إطار محدد",
+    "python": "🐍 Python",
+    "nodejs": "🟢 Node.js",
+    "java": "☕ Java",
+    "go": "🔷 Go",
+    "php": "🐘 PHP",
+    "rust": "🦀 Rust",
+    "dotnet": "🎯 .NET",
+    "ruby": "🔶 Ruby",
+    "other": "🌐 أخرى"
+  }
+}

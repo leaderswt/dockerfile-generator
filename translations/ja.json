@@ -1,0 +1,103 @@
+{
+  "lang": "ja",
+  "langName": "日本語",
+  "nav": {
+    "title": "🐳 Dockerfileジェネレーター",
+    "subtitle": "シンプル、強力、初心者に優しいDocker設定ツール"
+  },
+  "presets": {
+    "title": "🚀 クイックスタート",
+    "subtitle": "プリセットテンプレートを選択してDockerfileを素早く生成するか、設定をカスタマイズ"
+  },
+  "config": {
+    "title": "⚙️ 設定",
+    "basic": {
+      "title": "📦 基本設定",
+      "maintainer": "管理者（オプション）",
+      "maintainer_placeholder": "例: Your Name <your.email@example.com>",
+      "base_image": "ベースイメージ ⭐",
+      "base_image_hint": "⭐ マーク付きは推奨バージョン、サイズが小さく安全性が高い",
+      "work_dir": "作業ディレクトリ",
+      "work_dir_hint": "アプリケーションコードを保存するディレクトリパス",
+      "port": "公開ポート",
+      "port_hint": "コンテナ実行時に公開するポート番号"
+    },
+    "deps": {
+      "title": "📚 依存関係管理",
+      "package_manager": "パッケージマネージャー",
+      "requirements_file": "依存ファイル",
+      "requirements_hint": "Pythonプロジェクトの依存ファイル",
+      "app_dir": "アプリケーションディレクトリ",
+      "app_dir_hint": "プロジェクトディレクトリ（作業ディレクトリからの相対パス）"
+    },
+    "env": {
+      "title": "🔧 環境変数",
+      "subtitle": "実行時に必要な設定変数を設定",
+      "var_name": "変数名",
+      "var_value": "値",
+      "action": "操作",
+      "delete": "削除",
+      "add": "+ 環境変数を追加"
+    },
+    "advanced": {
+      "title": "⚡ 詳細設定",
+      "toggle": "詳細設定を展開",
+      "system_packages": "システムパッケージ",
+      "system_packages_hint": "追加のシステムパッケージをインストール、カンマ区切り（Alpineはスペース）",
+      "app_code_dir": "アプリケーションコードディレクトリ",
+      "app_code_dir_hint": "ソースコードディレクトリ（作業ディレクトリからの相対パス）",
+      "health_check": "ヘルスチェックコマンド",
+      "health_check_hint": "コンテナのヘルスチェックコマンド（推奨）",
+      "cmd": "起動コマンド",
+      "cmd_hint": "コンテナ起動時に実行するコマンド（フレームワークのデフォルトを上書き）",
+      "framework": "フレームワークタイプ（起動コマンドを自動設定）",
+      "create_user": "非rootユーザーを作成（セキュリティベストプラクティス）",
+      "create_user_hint": "有効化を推奨、非特権ユーザーでの実行はより安全"
+    }
+  },
+  "preview": {
+    "title": "📄 ライブプレビュー",
+    "copy": "📋 コピー",
+    "dockerignore": "📥 .dockerignore",
+    "download": "⬇️ ダウンロード",
+    "placeholder": "# プリセットを選択するか設定を構成してDockerfileの生成を開始\n# 上の「Dockerfileを生成」ボタンをクリックして結果を確認"
+  },
+  "tips": {
+    "title": "💡 ヒント",
+    "tip1_title": "🎯 プリセットテンプレートを使用",
+    "tip1_content": "プリセットテンプレートを選択すると、一般的な技術スタックを素早く設定でき、すべてのパラメータが自動的に設定されます。",
+    "tip2_title": "📦 Slimイメージはより軽量",
+    "tip2_content": "<code>*-slim</code>または<code>*-alpine</code>バージョンのイメージを優先、サイズが小さく安全性が高い。",
+    "tip3_title": "🔒 .dockerignoreを使用",
+    "tip3_content": "<code>.dockerignore</code>ファイルをダウンロードして、不要なファイル（<code>node_modules</code>など）を除外、ビルドを高速化。",
+    "tip4_title": "🏗️ マルチステージビルド",
+    "tip4_content": "複雑なプロジェクトの場合、マルチステージDockerfileを生成、最初にビルドしてから実行、最終イメージサイズを削減。"
+  },
+  "button": {
+    "generate": "🎯 Dockerfileを生成"
+  },
+  "toast": {
+    "preset_applied": "プリセットを適用: ",
+    "preset_failed": "プリセットの適用に失敗",
+    "generate_success": "Dockerfileが正常に生成されました！",
+    "generate_failed": "生成に失敗: ",
+    "copy_success": "クリップボードにコピーしました！",
+    "copy_failed": "コピーに失敗、手動でテキストを選択してください",
+    "download_success": "ダウンロード成功！",
+    "download_failed": "ダウンロードに失敗、再試行してください",
+    "select_image": "ベースイメージを選択してください",
+    "generate_first": "先にDockerfileを生成してください"
+  },
+  "frameworks": {
+    "none": "プリセットフレームワークなし",
+    "python": "🐍 Python",
+    "nodejs": "🟢 Node.js",
+    "java": "☕ Java",
+    "go": "🔷 Go",
+    "php": "🐘 PHP",
+    "rust": "🦀 Rust",
+    "dotnet": "🎯 .NET",
+    "ruby": "🔶 Ruby",
+    "other": "🌐 その他"
+  }
+}

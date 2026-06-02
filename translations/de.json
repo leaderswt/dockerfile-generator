@@ -1,0 +1,103 @@
+{
+  "lang": "de",
+  "langName": "Deutsch",
+  "nav": {
+    "title": "🐳 Dockerfile-Generator",
+    "subtitle": "Einfaches, leistungsstarkes, anfängerfreundliches Docker-Konfigurationstool"
+  },
+  "presets": {
+    "title": "🚀 Schnellstart",
+    "subtitle": "Wählen Sie eine Voreinstellung-Vorlage um schnell Dockerfile zu generieren oder konfigurieren Sie selbst"
+  },
+  "config": {
+    "title": "⚙️ Konfiguration",
+    "basic": {
+      "title": "📦 Basiskonfiguration",
+      "maintainer": "Betreuer (Optional)",
+      "maintainer_placeholder": "z.B.: Your Name <your.email@example.com>",
+      "base_image": "Basis-Image ⭐",
+      "base_image_hint": "⭐ Markierte Versionen empfohlen, kleiner und sicherer",
+      "work_dir": "Arbeitsverzeichnis",
+      "work_dir_hint": "Verzeichnispfad für Anwendungscode",
+      "port": "Offengelegter Port",
+      "port_hint": "Portnummer die beim Container-Start offengelegt wird"
+    },
+    "deps": {
+      "title": "📚 Abhängigkeitsverwaltung",
+      "package_manager": "Paket-Manager",
+      "requirements_file": "Abhängigkeitsdatei",
+      "requirements_hint": "Abhängigkeitsdatei für Python-Projekte",
+      "app_dir": "Anwendungsverzeichnis",
+      "app_dir_hint": "Projektverzeichnis (relativ zum Arbeitsverzeichnis)"
+    },
+    "env": {
+      "title": "🔧 Umgebungsvariablen",
+      "subtitle": "Laufzeit-Konfigurationsvariablen setzen",
+      "var_name": "Variablenname",
+      "var_value": "Wert",
+      "action": "Aktion",
+      "delete": "Löschen",
+      "add": "+ Umgebungsvariable hinzufügen"
+    },
+    "advanced": {
+      "title": "⚡ Erweiterte Optionen",
+      "toggle": "Erweiterte Konfiguration ausklappen",
+      "system_packages": "System-Pakete",
+      "system_packages_hint": "Zusätzliche System-Pakete installieren, kommagetrennt (Leerzeichen für Alpine)",
+      "app_code_dir": "Anwendungscode-Verzeichnis",
+      "app_code_dir_hint": "Quellcode-Verzeichnis (relativ zum Arbeitsverzeichnis)",
+      "health_check": "Health-Check-Befehl",
+      "health_check_hint": "Container Health-Check-Befehl (empfohlen)",
+      "cmd": "Start-Befehl",
+      "cmd_hint": "Befehl beim Container-Start (überschreibt Framework-Standard)",
+      "framework": "Framework-Typ (auto-setzt Start-Befehl)",
+      "create_user": "Non-root Benutzer erstellen (Sicherheits-Best-Practice)",
+      "create_user_hint": "Empfohlen zu aktivieren, Ausführung als non-privileged Benutzer ist sicherer"
+    }
+  },
+  "preview": {
+    "title": "📄 Live-Vorschau",
+    "copy": "📋 Kopieren",
+    "dockerignore": "📥 .dockerignore",
+    "download": "⬇️ Herunterladen",
+    "placeholder": "# Wählen Sie eine Voreinstellung oder konfigurieren Sie Optionen um Dockerfile zu generieren\n# Klicken Sie \"Dockerfile generieren\" oben um Ergebnisse zu sehen"
+  },
+  "tips": {
+    "title": "💡 Tipps",
+    "tip1_title": "🎯 Voreinstellung-Vorlagen verwenden",
+    "tip1_content": "Auswahl einer Voreinstellung-Vorlage konfiguriert schnell gängige Tech-Stacks mit allen Parametern automatisch gesetzt.",
+    "tip2_title": "📦 Slim-Images sind leichter",
+    "tip2_content": "Bevorzugen Sie <code>*-slim</code> oder <code>*-alpine</code> Image-Versionen, kleiner und sicherer.",
+    "tip3_title": "🔒 .dockerignore verwenden",
+    "tip3_content": "Denken Sie daran <code>.dockerignore</code> herunterzuladen um unnötige Dateien auszuschließen (wie <code>node_modules</code>), beschleunigt Build.",
+    "tip4_title": "🏗️ Multi-Stage-Build",
+    "tip4_content": "Für komplexe Projekte generieren Sie Multi-Stage Dockerfile, erst bauen dann ausführen, reduziert finales Image-Size."
+  },
+  "button": {
+    "generate": "🎯 Dockerfile generieren"
+  },
+  "toast": {
+    "preset_applied": "Voreinstellung angewendet: ",
+    "preset_failed": "Voreinstellung konnte nicht angewendet werden",
+    "generate_success": "Dockerfile erfolgreich generiert!",
+    "generate_failed": "Generierung fehlgeschlagen: ",
+    "copy_success": "In Zwischenablage kopiert!",
+    "copy_failed": "Kopieren fehlgeschlagen, bitte Text manuell auswählen",
+    "download_success": "Download erfolgreich!",
+    "download_failed": "Download fehlgeschlagen, bitte erneut versuchen",
+    "select_image": "Bitte Basis-Image auswählen",
+    "generate_first": "Bitte zuerst Dockerfile generieren"
+  },
+  "frameworks": {
+    "none": "Kein Voreinstellungs-Framework",
+    "python": "🐍 Python",
+    "nodejs": "🟢 Node.js",
+    "java": "☕ Java",
+    "go": "🔷 Go",
+    "php": "🐘 PHP",
+    "rust": "🦀 Rust",
+    "dotnet": "🎯 .NET",
+    "ruby": "🔶 Ruby",
+    "other": "🌐 Andere"
+  }
+}

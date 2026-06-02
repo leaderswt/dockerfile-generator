@@ -1,0 +1,103 @@
+{
+  "lang": "zh",
+  "langName": "简体中文",
+  "nav": {
+    "title": "🐳 Dockerfile生成器",
+    "subtitle": "简单、强大、小白友好的Docker配置工具"
+  },
+  "presets": {
+    "title": "🚀 快速开始",
+    "subtitle": "选择一个预设模板快速生成Dockerfile，或自定义配置"
+  },
+  "config": {
+    "title": "⚙️ 配置选项",
+    "basic": {
+      "title": "📦 基础配置",
+      "maintainer": "维护者（可选）",
+      "maintainer_placeholder": "例如: Your Name <your.email@example.com>",
+      "base_image": "基础镜像 ⭐",
+      "base_image_hint": "⭐ 标记为推荐版本，体积小且安全性高",
+      "work_dir": "工作目录",
+      "work_dir_hint": "应用代码存放的目录路径",
+      "port": "暴露端口",
+      "port_hint": "容器运行时需要暴露的端口号"
+    },
+    "deps": {
+      "title": "📚 依赖管理",
+      "package_manager": "包管理器",
+      "requirements_file": "依赖文件名",
+      "requirements_hint": "Python项目的依赖文件",
+      "app_dir": "应用代码目录",
+      "app_dir_hint": "项目目录（相对于工作目录）"
+    },
+    "env": {
+      "title": "🔧 环境变量",
+      "subtitle": "设置容器运行时需要的配置变量",
+      "var_name": "变量名",
+      "var_value": "值",
+      "action": "操作",
+      "delete": "删除",
+      "add": "+ 添加环境变量"
+    },
+    "advanced": {
+      "title": "⚡ 高级选项",
+      "toggle": "展开高级配置",
+      "system_packages": "系统依赖包",
+      "system_packages_hint": "安装额外的系统包，逗号分隔（Alpine用空格）",
+      "app_code_dir": "应用代码目录",
+      "app_code_dir_hint": "源代码目录（相对于工作目录）",
+      "health_check": "健康检查命令",
+      "health_check_hint": "容器健康检查命令（推荐配置）",
+      "cmd": "启动命令",
+      "cmd_hint": "容器启动时执行的命令（覆盖框架默认命令）",
+      "framework": "框架类型（自动设置启动命令）",
+      "create_user": "创建非root用户运行（安全最佳实践）",
+      "create_user_hint": "推荐启用，以非特权用户运行应用更安全"
+    }
+  },
+  "preview": {
+    "title": "📄 实时预览",
+    "copy": "📋 复制",
+    "dockerignore": "📥 .dockerignore",
+    "download": "⬇️ 下载",
+    "placeholder": "# 选择一个预设或配置选项开始生成 Dockerfile\n# 点击上方\"生成 Dockerfile\"按钮查看结果"
+  },
+  "tips": {
+    "title": "💡 使用技巧",
+    "tip1_title": "🎯 使用预设模板",
+    "tip1_content": "选择预设模板可以快速配置常用技术栈，所有参数会自动设置，非常适合新手。",
+    "tip2_title": "📦 slim 镜像更轻量",
+    "tip2_content": "优先选择 <code>*-slim</code> 或 <code>*-alpine</code> 版本的镜像，体积小、安全性高。",
+    "tip3_title": "🔒 使用 .dockerignore",
+    "tip3_content": "记得下载 <code>.dockerignore</code> 文件，排除不需要的文件（如 <code>node_modules</code>），加快构建速度。",
+    "tip4_title": "🏗️ 多阶段构建",
+    "tip4_content": "对于复杂项目，可以生成分阶段构建的 Dockerfile，先构建再运行，减少最终镜像体积。"
+  },
+  "button": {
+    "generate": "🎯 生成 Dockerfile"
+  },
+  "toast": {
+    "preset_applied": "已应用预设: ",
+    "preset_failed": "应用预设失败",
+    "generate_success": "Dockerfile 生成成功！",
+    "generate_failed": "生成失败: ",
+    "copy_success": "已复制到剪贴板！",
+    "copy_failed": "复制失败，请手动选择文本复制",
+    "download_success": "下载成功！",
+    "download_failed": "下载失败，请重试",
+    "select_image": "请选择基础镜像",
+    "generate_first": "请先生成 Dockerfile"
+  },
+  "frameworks": {
+    "none": "不使用预设框架",
+    "python": "🐍 Python",
+    "nodejs": "🟢 Node.js",
+    "java": "☕ Java",
+    "go": "🔷 Go",
+    "php": "🐘 PHP",
+    "rust": "🦀 Rust",
+    "dotnet": "🎯 .NET",
+    "ruby": "🔶 Ruby",
+    "other": "🌐 其他"
+  }
+}

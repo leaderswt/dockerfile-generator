@@ -827,6 +827,61 @@ def validate():
             'error': str(e)
         }), 500
 
+# ==================================================
+# 多语言支持 API
+# ==================================================
+
+# 支持的语言列表
+SUPPORTED_LANGUAGES = {
+    'zh': '简体中文',
+    'en': 'English',
+    'ja': '日本語',
+    'ko': '한국어',
+    'ru': 'Русский',
+    'ar': 'العربية',
+    'de': 'Deutsch',
+    'fr': 'Français'
+}
+
+# 语言对应的RTL（从右到左）标记
+RTL_LANGUAGES = ['ar']
+
+def load_translation(lang):
+    """加载指定语言的翻译文件"""
+    translations_dir = os.path.join(os.path.dirname(__file__), 'translations')
+    lang_file = os.path.join(translations_dir, f'{lang}.json')
+    
+    # 如果请求的语言不存在，回退到中文
+    if not os.path.exists(lang_file):
+        lang_file = os.path.join(translations_dir, 'zh.json')
+    
+    try:
+        with open(lang_file, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Error loading translation: {e}")
+        return {}
+
+@app.route('/api/languages')
+def get_languages():
+    """获取支持的语言列表"""
+    return jsonify({
+        'success': True,
+        'languages': SUPPORTED_LANGUAGES,
+        'default': 'zh',
+        'rtl': RTL_LANGUAGES
+    })
+
+@app.route('/api/translation/<lang>')
+def get_translation(lang):
+    """获取指定语言的翻译"""
+    translation = load_translation(lang)
+    return jsonify({
+        'success': True,
+        'translation': translation,
+        'is_rtl': lang in RTL_LANGUAGES
+    })
+
 # 配置文件上传目录
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), 'downloads')
 
