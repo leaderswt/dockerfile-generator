@@ -1,5 +1,7 @@
 # 🐳 Dockerfile生成器
 
+> 🤖 **AI 辅助开发项目** - 由 AI 编程助手（SOLO）驱动开发，基于自然语言需求自动生成完整功能。
+
 一个功能强大、界面美观、小白友好的Dockerfile生成工具。
 
 ## ✨ 特性
@@ -206,10 +208,11 @@ MIT License
 
 ## 🙏 致谢
 
+- **SOLO** - AI 编程助手，全程驱动本项目的设计与实现
 - Flask框架
 - Highlight.js代码高亮
 - GitHub Dark主题设计灵感
 
 ---
 
-**Made with ❤️ by AI Assistant**
+**🤖 AI Generated & Developed by SOLO**
