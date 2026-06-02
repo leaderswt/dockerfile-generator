@@ -3,7 +3,7 @@ Dockerfile生成器 - 图形界面工具
 功能强大、界面美观、小白友好的Dockerfile生成工具
 """
 
-from flask import Flask, render_template, request, jsonify, send_file
+from flask import Flask, render_template, request, jsonify, send_file, send_from_directory
 import json
 import os
 from datetime import datetime
@@ -15,6 +15,11 @@ app = Flask(__name__)
 
 # 注册高级功能路由
 register_advanced_routes(app)
+
+# 静态文件路由 - 用于i18n.js（使用/i18n路径避免与Flask默认static冲突）
+@app.route('/i18n/<path:filename>')
+def i18n_files(filename):
+    return send_from_directory(os.path.join(app.root_path, 'translations'), filename)
 
 # 预设模板配置
 PRESETS = {
