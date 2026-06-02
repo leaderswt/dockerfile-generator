@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐳 Dockerfile生成器 - 小白友好的Docker工具</title>
+    
+    <!-- 引入 Highlight.js 用于代码高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2496ed;
+            --primary-dark: #1a73e8;
+            --secondary-color: #36d9d9;
+            --accent-color: #ff6b6b;
+            --bg-dark: #0d1117;
+            --bg-card: #161b22;
+            --bg-input: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --border-color: #30363d;
+            --success-color: #3fb950;
+            --warning-color: #d29922;
+            --error-color: #f85149;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* 顶部导航 */
+        .navbar {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-dark) 100%);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar p {
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* 预设模板区域 */
+        .presets-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .presets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .preset-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preset-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(36, 150, 237, 0.15);
+        }
+
+        .preset-card.selected {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, rgba(36, 150, 237, 0.1), rgba(54, 217, 217, 0.1));
+        }
+
+        .preset-card h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .preset-card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .preset-card .tag {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* 主布局 */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 配置面板 */
+        .config-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .config-section {
+            margin-bottom: 2rem;
+        }
+
+        .config-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .config-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(36, 150, 237, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .form-hint {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* 复选框组 */
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-input);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-item:hover {
+            background: var(--border-color);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        /* 预览面板 */
+        .preview-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .preview-header {
+            padding: 1rem 1.5rem;
+            background: var(--bg-input);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-header h3 {
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .preview-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--bg-input);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+        }
+
+        .preview-content {
+            padding: 1.5rem;
+            background: var(--bg-dark);
+            flex: 1;
+        }
+
+        .preview-content pre {
+            margin: 0;
+            padding: 1rem;
+            background: #0d1117;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .preview-content code {
+            font-family: 'Fira Code', 'Monaco', 'Courier New', monospace;
+        }
+
+        /* 状态消息 */
+        .status-bar {
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg-input);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .status-bar.success {
+            background: rgba(63, 185, 80, 0.1);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .status-bar.error {
+            background: rgba(248, 81, 73, 0.1);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+
+        .status-bar.warning {
+            background: rgba(210, 153, 34, 0.1);
+            color: var(--warning-color);
+            border: 1px solid var(--warning-color);
+        }
+
+        /* 生成按钮 */
+        .generate-section {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .btn-generate {
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(36, 150, 237, 0.3);
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(36, 150, 237, 0.4);
+        }
+
+        .btn-generate:active {
+            transform: translateY(0);
+        }
+
+        /* 环境变量表格 */
+        .env-vars-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .env-vars-table th,
+        .env-vars-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .env-vars-table th {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .env-vars-table input {
+            width: 100%;
+            padding: 0.5rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+        }
+
+        .env-vars-table input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn-remove {
+            background: var(--error-color);
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        .btn-add {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        /* 高级选项折叠 */
+        .advanced-toggle {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .advanced-toggle:hover {
+            border-color: var(--primary-color);
+        }
+
+        .advanced-toggle.active {
+            border-color: var(--primary-color);
+            background: rgba(36, 150, 237, 0.1);
+        }
+
+        .advanced-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .advanced-content.show {
+            max-height: 2000px;
+            margin-top: 1rem;
+        }
+
+        /* Toast 通知 */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.success {
+            border-color: var(--success-color);
+        }
+
+        .toast.error {
+            border-color: var(--error-color);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* 快捷提示卡片 */
+        .tips-section {
+            margin-top: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .tip-card {
+            background: var(--bg-input);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .tip-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .tip-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .tip-card code {
+            background: var(--bg-dark);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .presets-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-panel {
+                position: static;
+            }
+        }
+
+        /* 加载动画 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 辅助类 */
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>🐳 Dockerfile生成器</h1>
+        <p>简单、强大、小白友好的Docker配置工具</p>
+    </nav>
+
+    <div class="container">
+        <!-- 预设模板区域 -->
+        <section class="presets-section">
+            <h2 class="section-title">🚀 快速开始</h2>
+            <p class="section-subtitle">选择一个预设模板快速生成Dockerfile，或自定义配置</p>
+            
+            <div class="presets-grid" id="presetsGrid">
+                {% for key, preset in presets.items() %}
+                <div class="preset-card" data-preset="{{ key }}" onclick="selectPreset('{{ key }}')">
+                    <h3>{{ preset.name }}</h3>
+                    <p>{{ preset.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- 主布局：配置 + 预览 -->
+        <div class="main-layout">
+            <!-- 配置面板 -->
+            <div class="config-panel">
+                <h2 class="section-title">⚙️ 配置选项</h2>
+                
+                <!-- 基础配置 -->
+                <div class="config-section">
+                    <h3>📦 基础配置</h3>
+                    
+                    <div class="form-group">
+                        <label>维护者（可选）</label>
+                        <input type="text" id="maintainer" placeholder="例如: Your Name <your.email@example.com>">
+                    </div>
+
+                    <div class="form-group">
+                        <label>基础镜像 ⭐</label>
+                        <select id="baseImage">
+                            <option value="">选择基础镜像...</option>
+                            <optgroup label="🐍 Python（推荐 slim 版本）">
+                                <option value="python:3.12-slim">Python 3.12 (slim) ⭐</option>
+                                <option value="python:3.12-alpine">Python 3.12 (Alpine)</option>
+                                <option value="python:3.11-slim">Python 3.11 (slim)</option>
+                                <option value="python:3.11-alpine">Python 3.11 (Alpine)</option>
+                                <option value="python:3.12">Python 3.12 (完整)</option>
+                            </optgroup>
+                            <optgroup label="🟢 Node.js（推荐 alpine 版本）">
+                                <option value="node:22-alpine">Node.js 22 (Alpine) ⭐</option>
+                                <option value="node:20-alpine">Node.js 20 (Alpine)</option>
+                                <option value="node:18-alpine">Node.js 18 (Alpine)</option>
+                                <option value="node:22">Node.js 22 (完整)</option>
+                            </optgroup>
+                            <optgroup label="☕ Java（推荐 Eclipse Temurin）">
+                                <option value="eclipse-temurin:21-jdk-alpine">Eclipse Temurin 21 (Alpine) ⭐</option>
+                                <option value="eclipse-temurin:17-jdk-alpine">Eclipse Temurin 17 (Alpine)</option>
+                                <option value="openjdk:21-slim">OpenJDK 21 (slim)</option>
+                                <option value="openjdk:17-slim">OpenJDK 17 (slim)</option>
+                            </optgroup>
+                            <optgroup label="🔷 Go">
+                                <option value="golang:1.23-alpine">Go 1.23 (Alpine) ⭐</option>
+                                <option value="golang:1.22-alpine">Go 1.22 (Alpine)</option>
+                                <option value="golang:1.23">Go 1.23 (完整)</option>
+                            </optgroup>
+                            <optgroup label="🐘 PHP">
+                                <option value="php:8.3-apache">PHP 8.3 (Apache) ⭐</option>
+                                <option value="php:8.3-fpm-alpine">PHP 8.3 (FPM Alpine)</option>
+                                <option value="php:8.2-apache">PHP 8.2 (Apache)</option>
+                            </optgroup>
+                            <optgroup label="🦀 Rust">
+                                <option value="rust:1.75-slim">Rust 1.75 (slim) ⭐</option>
+                                <option value="rust:1.75-alpine">Rust 1.75 (Alpine)</option>
+                            </optgroup>
+                            <optgroup label="🎯 .NET">
+                                <option value="mcr.microsoft.com/dotnet/aspnet:8.0-alpine">.NET 8.0 (Alpine) ⭐</option>
+                                <option value="mcr.microsoft.com/dotnet/aspnet:8.0">.NET 8.0 (完整)</option>
+                                <option value="mcr.microsoft.com/dotnet/aspnet:6.0-alpine">.NET 6.0 (Alpine)</option>
+                            </optgroup>
+                            <optgroup label="🔶 Ruby">
+                                <option value="ruby:3.3-slim">Ruby 3.3 (slim) ⭐</option>
+                                <option value="ruby:3.3-alpine">Ruby 3.3 (Alpine)</option>
+                                <option value="ruby:3.2-slim">Ruby 3.2 (slim)</option>
+                            </optgroup>
+                            <optgroup label="🌐 Web服务器">
+                                <option value="nginx:alpine">Nginx (Alpine) ⭐</option>
+                                <option value="httpd:alpine">Apache (Alpine)</option>
+                                <option value="caddy:alpine">Caddy (Alpine)</option>
+                            </optgroup>
+                            <optgroup label="📦 其他">
+                                <option value="alpine:latest">Alpine Linux</option>
+                                <option value="debian:bookworm-slim">Debian 12 (slim)</option>
+                                <option value="ubuntu:24.04">Ubuntu 24.04</option>
+                                <option value="distroless/static-debian12">Distroless (超轻量)</option>
+                            </optgroup>
+                        </select>
+                        <p class="form-hint">⭐ 标记为推荐版本，体积小且安全性高</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>工作目录</label>
+                        <input type="text" id="workDir" value="/app" placeholder="/app">
+                        <p class="form-hint">应用代码存放的目录路径</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>暴露端口</label>
+                        <input type="text" id="port" placeholder="8080">
+                        <p class="form-hint">容器运行时需要暴露的端口号</p>
+                    </div>
+                </div>
+
+                <!-- 包管理器配置 -->
+                <div class="config-section">
+                    <h3>📚 依赖管理</h3>
+                    
+                    <div class="form-group">
+                        <label>包管理器</label>
+                        <select id="packageManager">
+                            <option value="none">无需依赖管理</option>
+                            <option value="pip">pip (Python)</option>
+                            <option value="npm">npm/yarn/pnpm (Node.js)</option>
+                            <option value="composer">Composer (PHP)</option>
+                            <option value="maven">Maven/Gradle (Java)</option>
+                            <option value="go">Go Modules</option>
+                            <option value="cargo">Cargo (Rust)</option>
+                            <option value="dotnet">NuGet (.NET)</option>
+                            <option value="bundler">Bundler (Ruby)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="requirementsFileGroup" style="display: none;">
+                        <label>依赖文件名</label>
+                        <input type="text" id="requirementsFile" placeholder="requirements.txt">
+                        <p class="form-hint">Python项目的依赖文件</p>
+                    </div>
+
+                    <div class="form-group" id="packageJsonGroup" style="display: none;">
+                        <label>应用代码目录</label>
+                        <input type="text" id="packageJson" placeholder=".">
+                        <p class="form-hint">Node.js项目目录（相对于工作目录）</p>
+                    </div>
+                </div>
+
+                <!-- 环境变量 -->
+                <div class="config-section">
+                    <h3>🔧 环境变量</h3>
+                    <p class="section-subtitle">设置容器运行时需要的配置变量</p>
+                    
+                    <table class="env-vars-table">
+                        <thead>
+                            <tr>
+                                <th>变量名</th>
+                                <th>值</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="envVarsBody">
+                            <tr>
+                                <td><input type="text" placeholder="NODE_ENV" class="env-key"></td>
+                                <td><input type="text" placeholder="production" class="env-value"></td>
+                                <td><button class="btn-remove" onclick="removeEnvVar(this)">删除</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn-add" onclick="addEnvVar()">+ 添加环境变量</button>
+                </div>
+
+                <!-- 高级选项 -->
+                <div class="config-section">
+                    <h3>⚡ 高级选项</h3>
+                    
+                    <div class="advanced-toggle" onclick="toggleAdvanced()">
+                        <span>展开高级配置</span>
+                        <span id="toggleIcon">▼</span>
+                    </div>
+                    
+                    <div class="advanced-content" id="advancedContent">
+                        <div class="form-group mt-2">
+                            <label>系统依赖包</label>
+                            <input type="text" id="systemPackages" placeholder="git, curl, vim">
+                            <p class="form-hint">安装额外的系统包，逗号分隔（Alpine用空格）</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>应用代码目录</label>
+                            <input type="text" id="appCodeDir" placeholder=".">
+                            <p class="form-hint">源代码目录（相对于工作目录）</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>健康检查命令</label>
+                            <input type="text" id="healthCheck" placeholder="curl -f http://localhost:8080/health">
+                            <p class="form-hint">容器健康检查命令（推荐配置）</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>启动命令</label>
+                            <input type="text" id="cmd" placeholder="python app.py">
+                            <p class="form-hint">容器启动时执行的命令（覆盖框架默认命令）</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>框架类型（自动设置启动命令）</label>
+                            <select id="framework">
+                                <option value="">不使用预设框架</option>
+                                <optgroup label="🐍 Python">
+                                    <option value="flask">Flask</option>
+                                    <option value="django">Django</option>
+                                    <option value="fastapi">FastAPI</option>
+                                </optgroup>
+                                <optgroup label="🟢 Node.js">
+                                    <option value="express">Express.js</option>
+                                    <option value="nextjs">Next.js</option>
+                                    <option value="nestjs">NestJS</option>
+                                    <option value="react">React (Vite)</option>
+                                    <option value="vue">Vue (Vite)</option>
+                                </optgroup>
+                                <optgroup label="☕ Java">
+                                    <option value="spring">Spring Boot</option>
+                                </optgroup>
+                                <optgroup label="🔷 Go">
+                                    <option value="gin">Gin</option>
+                                    <option value="fiber">Fiber</option>
+                                </optgroup>
+                                <optgroup label="🐘 PHP">
+                                    <option value="laravel">Laravel</option>
+                                </optgroup>
+                                <optgroup label="🦀 Rust">
+                                    <option value="actix">Actix-web</option>
+                                </optgroup>
+                                <optgroup label="🎯 .NET">
+                                    <option value="dotnet">ASP.NET Core</option>
+                                </optgroup>
+                                <optgroup label="🔶 Ruby">
+                                    <option value="rails">Ruby on Rails</option>
+                                </optgroup>
+                                <optgroup label="🌐 其他">
+                                    <option value="static">静态网站</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="createUser" checked>
+                                <span>创建非root用户运行（安全最佳实践）</span>
+                            </label>
+                            <p class="form-hint">推荐启用，以非特权用户运行应用更安全</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 生成按钮 -->
+                <div class="generate-section">
+                    <button class="btn-generate" onclick="generateDockerfile()">
+                        🎯 生成 Dockerfile
+                    </button>
+                </div>
+            </div>
+
+            <!-- 预览面板 -->
+            <div class="preview-panel">
+                <div class="preview-header">
+                    <h3>📄 实时预览</h3>
+                    <div class="preview-actions">
+                        <button class="btn btn-secondary" onclick="copyDockerfile()">
+                            📋 复制
+                        </button>
+                        <button class="btn btn-secondary" onclick="downloadDockerignore()">
+                            📥 .dockerignore
+                        </button>
+                        <button class="btn btn-primary" onclick="downloadDockerfile()">
+                            ⬇️ 下载
+                        </button>
+                    </div>
+                </div>
+                <div class="preview-content">
+                    <pre><code id="dockerfilePreview" class="dockerfile"># 选择一个预设或配置选项开始生成 Dockerfile
+# 点击上方"生成 Dockerfile"按钮查看结果</code></pre>
+                </div>
+                <div class="status-bar" id="statusBar" style="display: none;">
+                    <span id="statusIcon"></span>
+                    <span id="statusText"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 使用技巧 -->
+        <section class="tips-section">
+            <h2 class="section-title">💡 使用技巧</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h4>🎯 使用预设模板</h4>
+                    <p>选择预设模板可以快速配置常用技术栈，所有参数会自动设置，非常适合新手。</p>
+                </div>
+                <div class="tip-card">
+                    <h4>📦 slim 镜像更轻量</h4>
+                    <p>优先选择 <code>*-slim</code> 或 <code>*-alpine</code> 版本的镜像，体积小、安全性高。</p>
+                </div>
+                <div class="tip-card">
+                    <h4>🔒 使用 .dockerignore</h4>
+                    <p>记得下载 <code>.dockerignore</code> 文件，排除不需要的文件（如 <code>node_modules</code>），加快构建速度。</p>
+                </div>
+                <div class="tip-card">
+                    <h4>🏗️ 多阶段构建</h4>
+                    <p>对于复杂项目，可以生成分阶段构建的 Dockerfile，先构建再运行，减少最终镜像体积。</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 当前配置
+        let currentConfig = {};
+        let currentDockerfile = '';
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化包管理器显示/隐藏
+            updatePackageManagerUI();
+            
+            // 监听包管理器变化
+            document.getElementById('packageManager').addEventListener('change', updatePackageManagerUI);
+            
+            // 监听基础镜像变化
+            document.getElementById('baseImage').addEventListener('change', updatePackageManagerByBaseImage);
+            
+            // 监听框架变化
+            document.getElementById('framework').addEventListener('change', updatePortByFramework);
+        });
+
+        // 选择预设模板
+        function selectPreset(presetKey) {
+            // 更新UI
+            document.querySelectorAll('.preset-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelector(`[data-preset="${presetKey}"]`).classList.add('selected');
+
+            // 获取预设数据
+            fetch(`/api/preset/${presetKey}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        applyPreset(data.preset);
+                        showToast('已应用预设: ' + data.preset.name, 'success');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('应用预设失败', 'error');
+                });
+        }
+
+        // 应用预设配置
+        function applyPreset(preset) {
+            document.getElementById('baseImage').value = preset.base_image || '';
+            document.getElementById('port').value = preset.port || '';
+            document.getElementById('packageManager').value = preset.package_manager || 'none';
+            
+            updatePackageManagerUI();
+            
+            // 根据预设设置框架
+            if (preset.framework) {
+                document.getElementById('framework').value = preset.framework;
+            }
+        }
+
+        // 更新包管理器相关UI
+        function updatePackageManagerUI() {
+            const packageManager = document.getElementById('packageManager').value;
+            const requirementsFileGroup = document.getElementById('requirementsFileGroup');
+            const packageJsonGroup = document.getElementById('packageJsonGroup');
+
+            requirementsFileGroup.style.display = 'none';
+            packageJsonGroup.style.display = 'none';
+
+            if (packageManager === 'pip') {
+                requirementsFileGroup.style.display = 'block';
+                document.querySelector('#requirementsFileGroup label').textContent = '依赖文件名';
+                document.querySelector('#requirementsFileGroup input').placeholder = 'requirements.txt';
+                document.querySelector('#requirementsFileGroup .form-hint').textContent = 'Python项目的依赖文件';
+            } else if (packageManager === 'npm') {
+                packageJsonGroup.style.display = 'block';
+                document.querySelector('#packageJsonGroup label').textContent = '应用代码目录';
+                document.querySelector('#packageJsonGroup input').placeholder = '.';
+                document.querySelector('#packageJsonGroup .form-hint').textContent = 'Node.js项目目录（相对于工作目录）';
+            } else if (packageManager === 'composer') {
+                packageJsonGroup.style.display = 'block';
+                document.querySelector('#packageJsonGroup label').textContent = 'Composer文件路径';
+                document.querySelector('#packageJsonGroup input').placeholder = 'composer.json';
+                document.querySelector('#packageJsonGroup .form-hint').textContent = 'PHP项目的依赖文件';
+            } else if (packageManager === 'maven') {
+                packageJsonGroup.style.display = 'block';
+                document.querySelector('#packageJsonGroup label').textContent = 'Maven项目路径';
+                document.querySelector('#packageJsonGroup input').placeholder = '.';
+                document.querySelector('#packageJsonGroup .form-hint').textContent = 'Java项目目录（包含pom.xml）';
+            } else if (packageManager === 'cargo') {
+                packageJsonGroup.style.display = 'block';
+                document.querySelector('#packageJsonGroup label').textContent = 'Cargo项目路径';
+                document.querySelector('#packageJsonGroup input').placeholder = '.';
+                document.querySelector('#packageJsonGroup .form-hint').textContent = 'Rust项目目录（包含Cargo.toml）';
+            } else if (packageManager === 'dotnet') {
+                packageJsonGroup.style.display = 'block';
+                document.querySelector('#packageJsonGroup label').textContent = '.NET项目路径';
+                document.querySelector('#packageJsonGroup input').placeholder = '.';
+                document.querySelector('#packageJsonGroup .form-hint').textContent = '.NET项目目录（包含.csproj文件）';
+            } else if (packageManager === 'bundler') {
+                packageJsonGroup.style.display = 'block';
+                document.querySelector('#packageJsonGroup label').textContent = 'Gemfile路径';
+                document.querySelector('#packageJsonGroup input').placeholder = 'Gemfile';
+                document.querySelector('#packageJsonGroup .form-hint').textContent = 'Ruby项目的依赖文件';
+            }
+        }
+
+        // 根据基础镜像更新包管理器
+        function updatePackageManagerByBaseImage() {
+            const baseImage = document.getElementById('baseImage').value;
+            const packageManagerSelect = document.getElementById('packageManager');
+
+            if (baseImage.startsWith('python')) {
+                packageManagerSelect.value = 'pip';
+            } else if (baseImage.startsWith('node')) {
+                packageManagerSelect.value = 'npm';
+            } else if (baseImage.includes('jdk') || baseImage.includes('java') || baseImage.includes('temurin')) {
+                packageManagerSelect.value = 'maven';
+            } else if (baseImage.startsWith('golang')) {
+                packageManagerSelect.value = 'go';
+            } else if (baseImage.startsWith('php')) {
+                packageManagerSelect.value = 'composer';
+            } else if (baseImage.startsWith('rust')) {
+                packageManagerSelect.value = 'cargo';
+            } else if (baseImage.includes('dotnet')) {
+                packageManagerSelect.value = 'dotnet';
+            } else if (baseImage.startsWith('ruby')) {
+                packageManagerSelect.value = 'bundler';
+            } else if (baseImage.startsWith('nginx') || baseImage.startsWith('httpd') || baseImage.startsWith('caddy')) {
+                packageManagerSelect.value = 'none';
+            }
+
+            updatePackageManagerUI();
+        }
+
+        // 根据框架更新端口
+        function updatePortByFramework() {
+            const framework = document.getElementById('framework').value;
+            const portInput = document.getElementById('port');
+            
+            if (!portInput.value) {
+                const portMap = {
+                    'flask': '5000',
+                    'django': '8000',
+                    'fastapi': '8000',
+                    'express': '3000',
+                    'nextjs': '3000',
+                    'nestjs': '3000',
+                    'react': '5173',
+                    'vue': '5173',
+                    'spring': '8080',
+                    'gin': '8080',
+                    'fiber': '3000',
+                    'laravel': '80',
+                    'actix': '8080',
+                    'dotnet': '8080',
+                    'rails': '3000',
+                    'static': '80'
+                };
+                
+                if (portMap[framework]) {
+                    portInput.value = portMap[framework];
+                }
+            }
+        }
+
+        // 切换高级选项
+        function toggleAdvanced() {
+            const content = document.getElementById('advancedContent');
+            const toggle = document.querySelector('.advanced-toggle');
+            const icon = document.getElementById('toggleIcon');
+
+            content.classList.toggle('show');
+            toggle.classList.toggle('active');
+            icon.textContent = content.classList.contains('show') ? '▲' : '▼';
+        }
+
+        // 添加环境变量
+        function addEnvVar() {
+            const tbody = document.getElementById('envVarsBody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="text" placeholder="变量名" class="env-key"></td>
+                <td><input type="text" placeholder="值" class="env-value"></td>
+                <td><button class="btn-remove" onclick="removeEnvVar(this)">删除</button></td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        // 删除环境变量
+        function removeEnvVar(btn) {
+            const row = btn.closest('tr');
+            const tbody = document.getElementById('envVarsBody');
+            if (tbody.rows.length > 1) {
+                row.remove();
+            } else {
+                // 清空第一行而不是删除
+                row.querySelectorAll('input').forEach(input => input.value = '');
+            }
+        }
+
+        // 获取环境变量
+        function getEnvVars() {
+            const envVars = {};
+            document.querySelectorAll('#envVarsBody tr').forEach(row => {
+                const key = row.querySelector('.env-key').value.trim();
+                const value = row.querySelector('.env-value').value.trim();
+                if (key && value) {
+                    envVars[key] = value;
+                }
+            });
+            return envVars;
+        }
+
+        // 生成 Dockerfile
+        function generateDockerfile() {
+            const config = {
+                maintainer: document.getElementById('maintainer').value,
+                base_image: document.getElementById('baseImage').value,
+                work_dir: document.getElementById('workDir').value,
+                port: document.getElementById('port').value,
+                package_manager: document.getElementById('packageManager').value,
+                requirements_file: document.getElementById('requirementsFile').value,
+                package_json: document.getElementById('packageJson').value,
+                env_vars: getEnvVars(),
+                system_packages: document.getElementById('systemPackages').value,
+                app_code_dir: document.getElementById('appCodeDir').value,
+                health_check: document.getElementById('healthCheck').value,
+                cmd: document.getElementById('cmd').value,
+                framework: document.getElementById('framework').value,
+                create_user: document.getElementById('createUser').checked
+            };
+
+            // 验证必填项
+            if (!config.base_image) {
+                showToast('请选择基础镜像', 'error');
+                return;
+            }
+
+            // 发送请求
+            fetch('/api/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(config)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    currentDockerfile = data.dockerfile;
+                    updatePreview(data.dockerfile);
+                    showToast('Dockerfile 生成成功！', 'success');
+                } else {
+                    showToast('生成失败: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('生成失败，请重试', 'error');
+            });
+        }
+
+        // 更新预览
+        function updatePreview(content) {
+            const preview = document.getElementById('dockerfilePreview');
+            preview.textContent = content;
+            hljs.highlightElement(preview);
+        }
+
+        // 复制 Dockerfile
+        function copyDockerfile() {
+            if (!currentDockerfile) {
+                showToast('请先生成 Dockerfile', 'warning');
+                return;
+            }
+
+            navigator.clipboard.writeText(currentDockerfile).then(() => {
+                showToast('已复制到剪贴板！', 'success');
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                showToast('复制失败，请手动选择文本复制', 'error');
+            });
+        }
+
+        // 下载 Dockerfile
+        function downloadDockerfile() {
+            if (!currentDockerfile) {
+                showToast('请先生成 Dockerfile', 'warning');
+                return;
+            }
+
+            const blob = new Blob([currentDockerfile], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Dockerfile';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('Dockerfile 下载成功！', 'success');
+        }
+
+        // 下载 .dockerignore
+        function downloadDockerignore() {
+            const framework = document.getElementById('framework').value;
+            
+            fetch('/api/dockerignore', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ framework: framework })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const blob = new Blob([data.content], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = '.dockerignore';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    showToast('.dockerignore 下载成功！', 'success');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('下载失败，请重试', 'error');
+            });
+        }
+
+        // 显示状态消息
+        function showStatus(message, type) {
+            const statusBar = document.getElementById('statusBar');
+            const statusIcon = document.getElementById('statusIcon');
+            const statusText = document.getElementById('statusText');
+
+            statusBar.style.display = 'flex';
+            statusBar.className = 'status-bar ' + type;
+
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️'
+            };
+
+            statusIcon.textContent = icons[type] || 'ℹ️';
+            statusText.textContent = message;
+
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                statusBar.style.display = 'none';
+            }, 3000);
+        }
+
+        // Toast 通知
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            // 3秒后移除
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
